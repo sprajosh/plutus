@@ -1,0 +1,82 @@
+[
+  {
+    "id": "1",
+    "name": "Rent",
+    "amount": 1500,
+    "category": "Housing",
+    "isPaid": false,
+    "frequency": "monthly",
+    "billingStartMonth": 1,
+    "notes": ""
+  },
+  {
+    "id": "2",
+    "name": "Electricity",
+    "amount": 85,
+    "category": "Utilities",
+    "isPaid": false,
+    "frequency": "monthly",
+    "billingStartMonth": 1,
+    "notes": ""
+  },
+  {
+    "id": "3",
+    "name": "Amazon Prime",
+    "amount": 139,
+    "category": "Subscriptions",
+    "isPaid": false,
+    "frequency": "annual",
+    "billingStartMonth": 12,
+    "notes": "Annual renewal in December"
+  },
+  {
+    "id": "4",
+    "name": "Car Insurance",
+    "amount": 320,
+    "category": "Insurance",
+    "isPaid": false,
+    "frequency": "quarterly",
+    "billingStartMonth": 1,
+    "notes": ""
+  },
+  {
+    "id": "5",
+    "name": "Netflix",
+    "amount": 18,
+    "category": "Subscriptions",
+    "isPaid": false,
+    "frequency": "monthly",
+    "billingStartMonth": 1,
+    "notes": ""
+  },
+  {
+    "id": "6",
+    "name": "Internet",
+    "amount": 60,
+    "category": "Utilities",
+    "isPaid": true,
+    "frequency": "monthly",
+    "billingStartMonth": 1,
+    "notes": ""
+  },
+  {
+    "id": "7",
+    "name": "Domain Renewal",
+    "amount": 45,
+    "category": "Subscriptions",
+    "isPaid": false,
+    "frequency": "annual",
+    "billingStartMonth": 6,
+    "notes": "Renews every June"
+  },
+  {
+    "id": "8",
+    "name": "Gym Membership",
+    "amount": 240,
+    "category": "Healthcare",
+    "isPaid": false,
+    "frequency": "biannual",
+    "billingStartMonth": 3,
+    "notes": "Paid every 6 months"
+  }
+]
