@@ -53,10 +53,11 @@ export default function ExpensesPage() {
           <table className="expense-table">
             <thead>
               <tr>
-                <th>Expense</th>
+                <th className="col-expense">Expense</th>
                 <th className="col-category">Category</th>
-                <th>Status</th>
-                <th>Amount</th>
+                <th className="col-spacer"></th>
+                <th className="col-status">Status</th>
+                <th className="col-amount">Amount</th>
               </tr>
             </thead>
             <tbody>

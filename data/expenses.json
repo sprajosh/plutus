@@ -14,7 +14,7 @@
     "name": "Electricity",
     "amount": 85,
     "category": "Utilities",
-    "isPaid": false,
+    "isPaid": true,
     "frequency": "monthly",
     "billingStartMonth": 1,
     "notes": ""
@@ -34,7 +34,7 @@
     "name": "Car Insurance",
     "amount": 320,
     "category": "Insurance",
-    "isPaid": false,
+    "isPaid": true,
     "frequency": "quarterly",
     "billingStartMonth": 1,
     "notes": ""
@@ -44,7 +44,7 @@
     "name": "Netflix",
     "amount": 18,
     "category": "Subscriptions",
-    "isPaid": false,
+    "isPaid": true,
     "frequency": "monthly",
     "billingStartMonth": 1,
     "notes": ""
@@ -54,7 +54,7 @@
     "name": "Internet",
     "amount": 60,
     "category": "Utilities",
-    "isPaid": true,
+    "isPaid": false,
     "frequency": "monthly",
     "billingStartMonth": 1,
     "notes": ""
