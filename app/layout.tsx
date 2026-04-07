@@ -68,6 +68,16 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 </svg>
                 Add Expense
               </Link>
+
+              <span className="nav-label">System</span>
+              <Link href="/settings" className="nav-link">
+                {/* Gear icon */}
+                <svg className="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="8" cy="8" r="2.5"/>
+                  <path d="M8 1v2M8 13v2M1 8h2M13 8h2M2.9 2.9l1.4 1.4M11.7 11.7l1.4 1.4M2.9 13.1l1.4-1.4M11.7 4.3l1.4-1.4"/>
+                </svg>
+                Settings
+              </Link>
             </div>
           </nav>
 

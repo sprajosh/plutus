@@ -4,7 +4,7 @@
     "name": "Rent",
     "amount": 1500,
     "category": "Housing",
-    "isPaid": false,
+    "isPaid": true,
     "frequency": "monthly",
     "billingStartMonth": 1,
     "notes": ""
