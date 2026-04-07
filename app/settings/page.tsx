@@ -4,25 +4,8 @@ import { useState, useEffect, useRef } from 'react';
 
 const themes = [
   { id: 'midnight-blue', name: 'Midnight Blue', color: '#2563EB' },
-  { id: 'forest', name: 'Forest', color: '#4ade80' },
-  { id: 'sunset', name: 'Sunset', color: '#fb923c' },
-  { id: 'slate', name: 'Slate', color: '#38bdf8' },
-  { id: 'rose', name: 'Rose', color: '#f472b6' },
-  { id: 'forest-minimal', name: 'Forest Minimal', color: '#2F855A' },
-  { id: 'sunset-warm', name: 'Sunset Warm', color: '#F97316' },
-  { id: 'cool-teal', name: 'Cool Teal', color: '#14B8A6' },
   { id: 'graphite-lime', name: 'Graphite Lime', color: '#84CC16' },
-  { id: 'deep-purple', name: 'Deep Purple', color: '#8B5CF6' },
-  { id: 'ocean-blue', name: 'Ocean Blue', color: '#3B82F6' },
-  { id: 'rose-soft', name: 'Rose Soft', color: '#F43F5E' },
-  { id: 'ice-blue', name: 'Ice Blue', color: '#38BDF8' },
-  { id: 'sand-light', name: 'Sand Light', color: '#D97706' },
   { id: 'mint-light', name: 'Mint Light', color: '#14B8A6' },
-  { id: 'pastel-simple', name: 'Pastel Simple', color: '#A5B4FC' },
-  { id: 'soft-lavender', name: 'Soft Lavender', color: '#C4B5FD' },
-  { id: 'peach-calm', name: 'Peach Calm', color: '#FDBA74' },
-  { id: 'mint-breeze', name: 'Mint Breeze', color: '#99F6E4' },
-  { id: 'baby-blue', name: 'Baby Blue', color: '#93C5FD' },
 ];
 
 export default function SettingsPage() {
