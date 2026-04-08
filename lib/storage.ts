@@ -1,62 +1,46 @@
-import fs from 'fs';
-import path from 'path';
+import { prisma } from './prisma';
 import type { Expense } from './types';
 
-const DATA_FILE = path.join(process.cwd(), 'data', 'expenses.json');
-
-function ensureDataFile() {
-  const dir = path.dirname(DATA_FILE);
-  if (!fs.existsSync(dir)) {
-    fs.mkdirSync(dir, { recursive: true });
-  }
-  if (!fs.existsSync(DATA_FILE)) {
-    fs.writeFileSync(DATA_FILE, '[]', 'utf-8');
-  }
+export async function readExpenses(userId: string): Promise<Expense[]> {
+  const expenses = await prisma.expense.findMany({
+    where: { userId },
+    orderBy: { createdAt: 'desc' },
+  });
+  return expenses as unknown as Expense[];
 }
 
-export function readExpenses(): Expense[] {
-  ensureDataFile();
-  const raw = fs.readFileSync(DATA_FILE, 'utf-8');
+export async function createExpense(userId: string, data: Omit<Expense, 'id'>): Promise<Expense> {
+  const expense = await prisma.expense.create({
+    data: {
+      ...data,
+      userId,
+    },
+  });
+  return expense as unknown as Expense;
+}
+
+export async function updateExpense(userId: string, id: string, data: Partial<Expense>): Promise<Expense | null> {
   try {
-    return JSON.parse(raw) as Expense[];
+    const expense = await prisma.expense.update({
+      where: { id, userId },
+      data,
+    });
+    return expense as unknown as Expense;
   } catch {
-    return [];
+    return null;
   }
 }
 
-export function writeExpenses(expenses: Expense[]): void {
-  ensureDataFile();
-  fs.writeFileSync(DATA_FILE, JSON.stringify(expenses, null, 2), 'utf-8');
-}
-
-export function getExpenseById(id: string): Expense | undefined {
-  return readExpenses().find((e) => e.id === id);
-}
-
-export function createExpense(data: Omit<Expense, 'id'>): Expense {
-  const expenses = readExpenses();
-  const newExpense: Expense = {
-    ...data,
-    id: Date.now().toString(),
-  };
-  expenses.push(newExpense);
-  writeExpenses(expenses);
-  return newExpense;
-}
-
-export function updateExpense(id: string, data: Partial<Expense>): Expense | null {
-  const expenses = readExpenses();
-  const idx = expenses.findIndex((e) => e.id === id);
-  if (idx === -1) return null;
-  expenses[idx] = { ...expenses[idx], ...data };
-  writeExpenses(expenses);
-  return expenses[idx];
-}
-
-export function deleteExpense(id: string): boolean {
-  const expenses = readExpenses();
-  const filtered = expenses.filter((e) => e.id !== id);
-  if (filtered.length === expenses.length) return false;
-  writeExpenses(filtered);
+export async function deleteExpense(userId: string, id: string): Promise<boolean> {
+  await prisma.expense.delete({
+    where: { id, userId },
+  });
   return true;
+}
+
+export async function getExpenseById(userId: string, id: string): Promise<Expense | undefined> {
+  const expense = await prisma.expense.findFirst({
+    where: { id, userId },
+  });
+  return expense as unknown as Expense | undefined;
 }

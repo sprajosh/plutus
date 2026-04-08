@@ -2,11 +2,23 @@
 
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
-import { createExpense, updateExpense, deleteExpense, readExpenses, writeExpenses } from './storage';
+import { auth } from './auth';
+import { createExpense, updateExpense, deleteExpense, readExpenses } from './storage';
 import { isActiveInMonth } from './billing';
 import type { Category, Frequency } from './constants';
+import { prisma } from './prisma';
+
+async function getUserId(): Promise<string> {
+  const session = await auth();
+  if (!session?.user?.id) {
+    redirect('/api/auth/signin');
+  }
+  return session.user.id;
+}
 
 export async function addExpenseAction(formData: FormData) {
+  const userId = await getUserId();
+  
   const name = formData.get('name') as string;
   const amount = parseFloat(formData.get('amount') as string);
   const category = formData.get('category') as Category;
@@ -18,7 +30,7 @@ export async function addExpenseAction(formData: FormData) {
     throw new Error('Invalid expense data');
   }
 
-  createExpense({
+  await createExpense(userId, {
     name,
     amount,
     category,
@@ -34,6 +46,8 @@ export async function addExpenseAction(formData: FormData) {
 }
 
 export async function editExpenseAction(id: string, formData: FormData) {
+  const userId = await getUserId();
+  
   const name = formData.get('name') as string;
   const amount = parseFloat(formData.get('amount') as string);
   const category = formData.get('category') as Category;
@@ -45,7 +59,7 @@ export async function editExpenseAction(id: string, formData: FormData) {
     throw new Error('Invalid expense data');
   }
 
-  updateExpense(id, {
+  await updateExpense(userId, id, {
     name,
     amount,
     category,
@@ -60,33 +74,36 @@ export async function editExpenseAction(id: string, formData: FormData) {
 }
 
 export async function togglePaidAction(id: string) {
-  const expenses = readExpenses();
+  const userId = await getUserId();
+  
+  const expenses = await readExpenses(userId);
   const expense = expenses.find((e) => e.id === id);
   if (!expense) return;
 
-  updateExpense(id, { isPaid: !expense.isPaid });
+  await updateExpense(userId, id, { isPaid: !expense.isPaid });
   revalidatePath('/');
   revalidatePath('/expenses');
 }
 
 export async function deleteExpenseAction(id: string) {
-  deleteExpense(id);
+  const userId = await getUserId();
+  await deleteExpense(userId, id);
   revalidatePath('/');
   revalidatePath('/expenses');
 }
 
 export async function monthlyResetAction() {
+  const userId = await getUserId();
+  
   const currentMonth = new Date().getMonth() + 1;
-  const expenses = readExpenses();
+  const expenses = await readExpenses(userId);
 
-  const updated = expenses.map((expense) => {
+  for (const expense of expenses) {
     if (isActiveInMonth(expense, currentMonth)) {
-      return { ...expense, isPaid: false };
+      await updateExpense(userId, expense.id, { isPaid: false });
     }
-    return expense;
-  });
-
-  writeExpenses(updated);
+  }
+  
   revalidatePath('/');
   revalidatePath('/expenses');
 }
