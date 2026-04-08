@@ -11,9 +11,11 @@ const themes = [
 export default function SettingsPage() {
   const [currentTheme, setCurrentTheme] = useState('midnight-blue');
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    setMounted(true);
     const saved = localStorage.getItem('fintrack-theme') || 'midnight-blue';
     setCurrentTheme(saved);
     document.body.className = `theme-${saved}`;
@@ -32,14 +34,15 @@ export default function SettingsPage() {
   }, [dropdownOpen]);
 
   const handleThemeChange = (themeId: string) => {
-    const className = `theme-${themeId}`;
     setCurrentTheme(themeId);
     localStorage.setItem('fintrack-theme', themeId);
-    document.body.className = className;
+    document.body.className = `theme-${themeId}`;
     setDropdownOpen(false);
   };
 
   const currentThemeData = themes.find(t => t.id === currentTheme) || themes[0];
+
+  if (!mounted) return null;
 
   return (
     <div>
@@ -93,17 +96,10 @@ export default function SettingsPage() {
         <div className="settings-card">
           <div className="settings-row">
             <div className="settings-label">
-              <span className="settings-label-title">Profile</span>
-              <span className="settings-label-desc">Manage your account details</span>
+              <span className="settings-label-title">Sign In</span>
+              <span className="settings-label-desc">Sign in with Google to sync your data</span>
             </div>
-            <button className="btn btn-secondary" disabled>Coming Soon</button>
-          </div>
-          <div className="settings-row">
-            <div className="settings-label">
-              <span className="settings-label-title">Logout</span>
-              <span className="settings-label-desc">Sign out of your account</span>
-            </div>
-            <button className="btn btn-secondary" disabled>Coming Soon</button>
+            <a href="/api/auth/signin" className="btn btn-primary">Sign In</a>
           </div>
         </div>
       </div>
