@@ -1,4 +1,6 @@
 import Link from 'next/link';
+import { redirect } from 'next/navigation';
+import { auth } from '@/lib/auth';
 import { readExpenses } from '@/lib/storage';
 import { isActiveInMonth } from '@/lib/billing';
 import { ExpenseRow } from '../components/ExpenseRow';
@@ -9,8 +11,13 @@ function formatCurrency(amount: number) {
   return new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(amount);
 }
 
-export default function ExpensesPage() {
-  const expenses = readExpenses();
+export default async function ExpensesPage() {
+  const session = await auth();
+  if (!session?.user?.id) {
+    redirect('/api/auth/signin');
+  }
+
+  const expenses = await readExpenses(session.user.id);
   const currentMonth = new Date().getMonth() + 1;
 
   const activeExpenses = expenses.filter((e) => isActiveInMonth(e, currentMonth));

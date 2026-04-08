@@ -1,8 +1,15 @@
 import Link from 'next/link';
+import { redirect } from 'next/navigation';
+import { auth } from '@/lib/auth';
 import { addExpenseAction } from '@/lib/actions';
 import { ExpenseForm } from '../../components/ExpenseForm';
 
-export default function NewExpensePage() {
+export default async function NewExpensePage() {
+  const session = await auth();
+  if (!session?.user?.id) {
+    redirect('/api/auth/signin');
+  }
+
   return (
     <div className="form-page">
       <div className="page-header">

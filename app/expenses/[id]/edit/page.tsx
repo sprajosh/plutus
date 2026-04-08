@@ -1,5 +1,6 @@
 import Link from 'next/link';
-import { notFound } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
+import { auth } from '@/lib/auth';
 import { getExpenseById } from '@/lib/storage';
 import { editExpenseAction } from '@/lib/actions';
 import { ExpenseForm } from '../../../components/ExpenseForm';
@@ -9,8 +10,13 @@ interface Props {
 }
 
 export default async function EditExpensePage({ params }: Props) {
+  const session = await auth();
+  if (!session?.user?.id) {
+    redirect('/api/auth/signin');
+  }
+
   const { id } = await params;
-  const expense = getExpenseById(id);
+  const expense = await getExpenseById(session.user.id, id);
 
   if (!expense) notFound();
 
