@@ -8,21 +8,25 @@ export const metadata: Metadata = {
   description: 'Personal finance expense tracker',
 };
 
-function getInitialTheme() {
-  if (typeof window !== 'undefined') {
-    return 'theme-' + (localStorage.getItem('fintrack-theme') || 'midnight-blue');
-  }
-  return 'theme-midnight-blue';
-}
-
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const now = new Date();
   const monthYear = now.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
-  const theme = getInitialTheme();
 
   return (
     <html lang="en">
-      <body className={theme}>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                var theme = localStorage.getItem('fintrack-theme') || 'midnight-blue';
+                document.body.className = 'theme-' + theme;
+              })();
+            `,
+          }}
+        />
+      </head>
+      <body>
         <div className="app-shell">
           <header className="topbar">
             <Link href="/" className="topbar-logo">

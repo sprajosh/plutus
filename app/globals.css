@@ -79,6 +79,80 @@
   --glow: 0 0 24px rgba(163, 230, 53, 0.2);
 }
 
+.theme-obsidian-copper {
+  --theme-name: 'obsidian-copper';
+  --bg-base: #0E0D0C;
+  --bg-surface: #1A1916;
+  --bg-elevated: #252320;
+  --bg-card: #1A1916;
+  --bg-hover: #2D2B27;
+  --bg-inactive: #141310;
+  --border: #2D2B27;
+  --border-subtle: #38352F;
+  
+  --blue: #C8762A;
+  --blue-dim: rgba(200, 118, 42, 0.1);
+  --blue-bright: #E8914A;
+  --blue-accent: #C8762A;
+  --indigo-dim: rgba(200, 118, 42, 0.08);
+  --indigo: #E8914A;
+  --indigo-glow: #E8914A;
+  --indigo-glow-sm: rgba(232, 145, 74, 0.1);
+  
+  --text-primary: #F0EDE8;
+  --text-secondary: #A89F94;
+  --text-muted: #6B6560;
+  --text-accent: #C8762A;
+  
+  --green: #3EB489;
+  --green-dim: rgba(62, 180, 137, 0.1);
+  --red: #E05252;
+  --red-dim: rgba(224, 82, 82, 0.1);
+  --amber: #D49A3A;
+  --amber-dim: rgba(212, 154, 58, 0.1);
+  --purple: #9D7FD4;
+  --purple-dim: rgba(157, 127, 212, 0.1);
+  
+  --glow: 0 0 24px rgba(200, 118, 42, 0.2);
+}
+
+.theme-abyss-violet {
+  --theme-name: 'abyss-violet';
+  --bg-base: #09080F;
+  --bg-surface: #110F1E;
+  --bg-elevated: #1B1830;
+  --bg-card: #110F1E;
+  --bg-hover: #231F3A;
+  --bg-inactive: #0D0B17;
+  --border: #231F3A;
+  --border-subtle: #2E2A45;
+  
+  --blue: #7C6AF0;
+  --blue-dim: rgba(124, 106, 240, 0.13);
+  --blue-bright: #9D8FF5;
+  --blue-accent: #7C6AF0;
+  --indigo-dim: rgba(124, 106, 240, 0.08);
+  --indigo: #9D8FF5;
+  --indigo-glow: #9D8FF5;
+  --indigo-glow-sm: rgba(157, 143, 245, 0.1);
+  
+  --text-primary: #EAE8F5;
+  --text-secondary: #9691B8;
+  --text-muted: #5A5676;
+  --text-accent: #7C6AF0;
+  
+  --green: #34C98A;
+  --green-dim: rgba(52, 201, 138, 0.13);
+  --red: #E05C5C;
+  --red-dim: rgba(224, 92, 92, 0.13);
+  --amber: #D4923A;
+  --amber-dim: rgba(212, 146, 58, 0.13);
+  --purple: #A78BFA;
+  --purple-dim: rgba(167, 139, 250, 0.13);
+  
+  --glow: 0 0 24px rgba(124, 106, 240, 0.2);
+}
+
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { font-size: 14px; scroll-behavior: smooth; }
 

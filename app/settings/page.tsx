@@ -5,7 +5,8 @@ import { useState, useEffect, useRef } from 'react';
 const themes = [
   { id: 'midnight-blue', name: 'Midnight Blue', color: '#2563EB' },
   { id: 'graphite-lime', name: 'Graphite Lime', color: '#84CC16' },
-  { id: 'mint-light', name: 'Mint Light', color: '#14B8A6' },
+  { id: 'obsidian-copper', name: 'Obsidian Copper', color: '#C8762A' },
+  { id: 'abyss-violet', name: 'Abyss Violet', color: '#7C6AF0' },
 ];
 
 export default function SettingsPage() {
