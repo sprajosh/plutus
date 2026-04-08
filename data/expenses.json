@@ -14,7 +14,7 @@
     "name": "Electricity",
     "amount": 85,
     "category": "Utilities",
-    "isPaid": true,
+    "isPaid": false,
     "frequency": "monthly",
     "billingStartMonth": 1,
     "notes": ""
