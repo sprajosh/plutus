@@ -22,8 +22,8 @@
   --indigo-glow-sm: rgba(59, 130, 246, 0.1);
   
   --text-primary: #E0E7FF;
-  --text-secondary: #FFFFFF;
-  --text-muted: #6B7280;
+  --text-secondary: #CBD5E1;
+  --text-muted: #94A3B8;
   --text-accent: #3B82F6;
   
   --green: #34D399;
@@ -51,12 +51,12 @@
   --theme-name: 'graphite-lime';
   --bg-base: #0F0F10;
   --bg-surface: #1A1A1D;
-  --bg-elevated: #252528;
+  --bg-elevated: #2E2E34;
   --bg-card: #1A1A1D;
-  --bg-hover: #252528;
+  --bg-hover: #2E2E34;
   --bg-inactive: #141416;
   --border: #2E2E32;
-  --border-subtle: #252528;
+  --border-subtle: #2E2E34;
   --blue: #84CC16;
   --blue-dim: rgba(132, 204, 22, 0.15);
   --blue-bright: #65A30D;
@@ -66,11 +66,11 @@
   --indigo-glow-sm: rgba(163, 230, 53, 0.1);
   --text-primary: #F4F4F5;
   --text-secondary: #A1A1AA;
-  --text-muted: #A3E635;
+  --text-muted: #71717A;
   --text-accent: #A3E635;
   --green: #A3E635;
   --green-dim: rgba(163, 230, 53, 0.12);
-  --red: #F43F5E;
+  --red: #EF4444;
   --red-dim: rgba(244, 63, 94, 0.12);
   --amber: #EAB308;
   --amber-dim: rgba(234, 179, 8, 0.12);
