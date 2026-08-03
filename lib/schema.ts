@@ -1,4 +1,4 @@
-import { sqliteTable, text, integer, real, unique } from 'drizzle-orm/sqlite-core';
+import { sqliteTable, text, integer, real, unique, primaryKey } from 'drizzle-orm/sqlite-core';
 import { relations } from 'drizzle-orm';
 import { createId } from '@paralleldrive/cuid2';
 
@@ -7,7 +7,7 @@ export const user = sqliteTable('user', {
   id: text('id').primaryKey().$defaultFn(createId),
   name: text('name'),
   email: text('email').unique(),
-  emailVerified: integer('email_verified', { mode: 'timestamp' }),
+  emailVerified: integer('emailVerified', { mode: 'timestamp' }),
   image: text('image'),
 });
 
@@ -19,23 +19,24 @@ export const userRelations = relations(user, ({ many }) => ({
 
 // ── Account (NextAuth OAuth) ──────────────────────────
 export const account = sqliteTable('account', {
-  id: text('id').primaryKey().$defaultFn(createId),
-  userId: text('user_id')
+  userId: text('userId')
     .notNull()
     .references(() => user.id, { onDelete: 'cascade' }),
   type: text('type').notNull(),
   provider: text('provider').notNull(),
-  providerAccountId: text('provider_account_id').notNull(),
-  refreshToken: text('refresh_token'),
-  accessToken: text('access_token'),
-  expiresAt: integer('expires_at'),
-  tokenType: text('token_type'),
+  providerAccountId: text('providerAccountId').notNull(),
+  refresh_token: text('refresh_token'),
+  access_token: text('access_token'),
+  expires_at: integer('expires_at'),
+  token_type: text('token_type'),
   scope: text('scope'),
-  idToken: text('id_token'),
-  sessionState: text('session_state'),
-}, (t) => [
-  unique('account_provider_provider_account_id_unique').on(t.provider, t.providerAccountId),
-]);
+  id_token: text('id_token'),
+  session_state: text('session_state'),
+}, (account) => ({
+  compositePk: primaryKey({
+    columns: [account.provider, account.providerAccountId],
+  }),
+}));
 
 export const accountRelations = relations(account, ({ one }) => ({
   user: one(user, { fields: [account.userId], references: [user.id] }),
@@ -43,9 +44,8 @@ export const accountRelations = relations(account, ({ one }) => ({
 
 // ── Session (NextAuth database sessions) ──────────────
 export const session = sqliteTable('session', {
-  id: text('id').primaryKey().$defaultFn(createId),
-  sessionToken: text('session_token').notNull().unique(),
-  userId: text('user_id')
+  sessionToken: text('sessionToken').primaryKey(),
+  userId: text('userId')
     .notNull()
     .references(() => user.id, { onDelete: 'cascade' }),
   expires: integer('expires', { mode: 'timestamp' }).notNull(),
@@ -58,17 +58,17 @@ export const sessionRelations = relations(session, ({ one }) => ({
 // ── Expense ───────────────────────────────────────────
 export const expense = sqliteTable('expense', {
   id: text('id').primaryKey().$defaultFn(createId),
-  userId: text('user_id')
+  userId: text('userId')
     .notNull()
     .references(() => user.id, { onDelete: 'cascade' }),
   name: text('name').notNull(),
   amount: real('amount').notNull(),
   category: text('category').notNull(),
-  isPaid: integer('is_paid', { mode: 'boolean' }).notNull().default(false),
+  isPaid: integer('isPaid', { mode: 'boolean' }).notNull().default(false),
   frequency: text('frequency').notNull(),
-  billingStartMonth: integer('billing_start_month').notNull(),
+  billingStartMonth: integer('billingStartMonth').notNull(),
   notes: text('notes').notNull().default(''),
-  createdAt: integer('created_at', { mode: 'timestamp' }).notNull().$defaultFn(() => new Date()),
+  createdAt: integer('createdAt', { mode: 'timestamp' }).notNull().$defaultFn(() => new Date()),
 });
 
 export const expenseRelations = relations(expense, ({ one }) => ({
