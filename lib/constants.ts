@@ -1,5 +1,5 @@
-// Storage mode flag — switch to 'db' for production with Neon + Prisma + Google Auth
-export const STORAGE_MODE: 'local' | 'db' = 'local';
+// Storage mode flag — 'db' uses Turso (Drizzle), 'local' uses JSON file fallback
+export const STORAGE_MODE: 'local' | 'db' = 'db';
 
 export const CATEGORIES = [
   'Housing',
