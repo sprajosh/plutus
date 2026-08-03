@@ -6,7 +6,7 @@ import { auth } from './auth';
 import { createExpense, updateExpense, deleteExpense, readExpenses } from './storage';
 import { isActiveInMonth } from './billing';
 import type { Category, Frequency } from './constants';
-import { prisma } from './prisma';
+
 
 async function getUserId(): Promise<string> {
   const session = await auth();
