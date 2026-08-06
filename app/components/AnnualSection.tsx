@@ -16,7 +16,7 @@ export function AnnualSection({
   if (expenses.length === 0) return null;
 
   return (
-    <div>
+    <div className="annual-section">
       <div className="section-header">
         <div className="section-title">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" style={{ opacity: 0.6 }}>

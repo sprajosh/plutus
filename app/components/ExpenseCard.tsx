@@ -46,7 +46,9 @@ export function ExpenseCard({
 }) {
   const [isPending, startTransition] = useTransition();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [menuPos, setMenuPos] = useState({ top: 0, right: 0 });
   const menuRef = useRef<HTMLDivElement>(null);
+  const btnRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     if (!menuOpen) return;
@@ -72,6 +74,18 @@ export function ExpenseCard({
     if (confirm(`Delete "${expense.name}"?`)) {
       startTransition(() => deleteExpenseAction(expense.id));
     }
+  };
+
+  const openMenu = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (btnRef.current) {
+      const rect = btnRef.current.getBoundingClientRect();
+      setMenuPos({
+        top: rect.bottom + 6,
+        right: window.innerWidth - rect.right,
+      });
+    }
+    setMenuOpen(!menuOpen);
   };
 
   const nextInfo = showDue ? getNextBillingInfo(expense, currentMonth) : null;
@@ -110,8 +124,9 @@ export function ExpenseCard({
         <span className="expense-card-amount">{formatCurrency(expense.amount)}</span>
         <div className="kebab-menu" ref={menuRef} onClick={(e) => e.stopPropagation()}>
           <button
+            ref={btnRef}
             className="kebab-btn"
-            onClick={(e) => { e.stopPropagation(); setMenuOpen(!menuOpen); }}
+            onClick={openMenu}
             aria-label="More options"
           >
             <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
@@ -121,7 +136,10 @@ export function ExpenseCard({
             </svg>
           </button>
           {menuOpen && (
-            <div className="kebab-dropdown">
+            <div
+              className="kebab-dropdown"
+              style={{ position: 'fixed', top: menuPos.top, right: menuPos.right }}
+            >
               <Link
                 href={`/expenses/${expense.id}/edit`}
                 className="kebab-dropdown-item"

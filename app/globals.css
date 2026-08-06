@@ -814,6 +814,10 @@ body.dark .profile-avatar {
   gap: 8px;
 }
 
+.annual-section {
+  margin-top: 32px;
+}
+
 .expense-card {
   display: flex;
   align-items: center;
