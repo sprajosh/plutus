@@ -2,13 +2,17 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import './globals.css';
 import { MobileNav } from './components/MobileNav';
+import { TopbarAvatar } from './components/TopbarAvatar';
+import { auth } from '@/lib/auth';
 
 export const metadata: Metadata = {
   title: 'Plutus — Expense Planner',
   description: 'Personal finance expense tracker',
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const session = await auth();
+  const user = session?.user;
   const now = new Date();
   const monthYear = now.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
 
@@ -55,7 +59,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                   <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
                 </svg>
               </button>
-              <div className="topbar-avatar">JD</div>
+              <TopbarAvatar
+                name={user?.name ?? null}
+                image={user?.image ?? null}
+              />
             </div>
           </header>
 
