@@ -1,7 +1,6 @@
 'use client';
 
 import { useTransition, useState, useRef, useEffect } from 'react';
-import { createPortal } from 'react-dom';
 import { togglePaidAction, deleteExpenseAction } from '@/lib/actions';
 import Link from 'next/link';
 import type { Expense } from '@/lib/types';
@@ -47,7 +46,7 @@ export function ExpenseCard({
 }) {
   const [isPending, startTransition] = useTransition();
   const [menuOpen, setMenuOpen] = useState(false);
-  const [menuPos, setMenuPos] = useState({ top: 0, left: 0 });
+  const [openAbove, setOpenAbove] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const btnRef = useRef<HTMLButtonElement>(null);
 
@@ -81,48 +80,14 @@ export function ExpenseCard({
     e.stopPropagation();
     if (btnRef.current) {
       const rect = btnRef.current.getBoundingClientRect();
-      setMenuPos({
-        top: rect.bottom + 6,
-        left: rect.left,
-      });
+      const nearBottom = rect.bottom + 100 > window.innerHeight;
+      setOpenAbove(nearBottom);
     }
     setMenuOpen(!menuOpen);
   };
 
   const nextInfo = showDue ? getNextBillingInfo(expense, currentMonth) : null;
   const categoryColor = getCategoryColor(expense.category);
-
-  const dropdown = menuOpen ? createPortal(
-    <div
-      ref={menuRef}
-      className="kebab-dropdown"
-      style={{ position: 'fixed', top: menuPos.top, left: menuPos.left }}
-    >
-      <Link
-        href={`/expenses/${expense.id}/edit`}
-        className="kebab-dropdown-item"
-        onClick={() => setMenuOpen(false)}
-      >
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/>
-          <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/>
-        </svg>
-        Edit
-      </Link>
-      <button
-        className="kebab-dropdown-item danger"
-        onClick={(e) => { handleDelete(e); setMenuOpen(false); }}
-      >
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <polyline points="3 6 5 6 21 6"/>
-          <path d="M19 6l-1 14H6L5 6"/>
-          <path d="M10 11v6M14 11v6"/>
-        </svg>
-        Delete
-      </button>
-    </div>,
-    document.body
-  ) : null;
 
   return (
     <div
@@ -155,7 +120,7 @@ export function ExpenseCard({
       </div>
       <div className="expense-card-right">
         <span className="expense-card-amount">{formatCurrency(expense.amount)}</span>
-        <div className="kebab-menu" onClick={(e) => e.stopPropagation()}>
+        <div className="kebab-menu" ref={menuRef} onClick={(e) => e.stopPropagation()}>
           <button
             ref={btnRef}
             className="kebab-btn"
@@ -168,7 +133,32 @@ export function ExpenseCard({
               <circle cx="12" cy="19" r="1.5"/>
             </svg>
           </button>
-          {dropdown}
+          {menuOpen && (
+            <div className={`kebab-dropdown ${openAbove ? 'open-above' : ''}`}>
+              <Link
+                href={`/expenses/${expense.id}/edit`}
+                className="kebab-dropdown-item"
+                onClick={() => setMenuOpen(false)}
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/>
+                  <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                </svg>
+                Edit
+              </Link>
+              <button
+                className="kebab-dropdown-item danger"
+                onClick={(e) => { handleDelete(e); setMenuOpen(false); }}
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <polyline points="3 6 5 6 21 6"/>
+                  <path d="M19 6l-1 14H6L5 6"/>
+                  <path d="M10 11v6M14 11v6"/>
+                </svg>
+                Delete
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </div>
