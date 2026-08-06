@@ -1,47 +1,33 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
-
-const themes = [
-  { id: 'midnight-blue', name: 'Midnight Blue', color: '#4B6B7C' },
-  { id: 'graphite-lime', name: 'Graphite Lime', color: '#84CC16' },
-  { id: 'obsidian-copper', name: 'Obsidian Copper', color: '#C8762A' },
-  { id: 'abyss-violet', name: 'Abyss Violet', color: '#7C6AF0' },
-];
+import { useState, useEffect } from 'react';
 
 export default function SettingsPage() {
-  const [currentTheme, setCurrentTheme] = useState('midnight-blue');
-  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [isDark, setIsDark] = useState(false);
   const [mounted, setMounted] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setMounted(true);
-    const saved = localStorage.getItem('fintrack-theme') || 'midnight-blue';
-    setCurrentTheme(saved);
-    document.body.className = `theme-${saved}`;
+    const saved = localStorage.getItem('plutus-theme');
+    if (saved === 'dark') {
+      setIsDark(true);
+      document.body.classList.add('dark');
+    } else {
+      setIsDark(false);
+      document.body.classList.remove('dark');
+    }
   }, []);
 
-  useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
-        setDropdownOpen(false);
-      }
-    };
-    if (dropdownOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
-      return () => document.removeEventListener('mousedown', handleClickOutside);
+  const toggleTheme = (dark: boolean) => {
+    setIsDark(dark);
+    if (dark) {
+      localStorage.setItem('plutus-theme', 'dark');
+      document.body.classList.add('dark');
+    } else {
+      localStorage.setItem('plutus-theme', 'light');
+      document.body.classList.remove('dark');
     }
-  }, [dropdownOpen]);
-
-  const handleThemeChange = (themeId: string) => {
-    setCurrentTheme(themeId);
-    localStorage.setItem('fintrack-theme', themeId);
-    document.body.className = `theme-${themeId}`;
-    setDropdownOpen(false);
   };
-
-  const currentThemeData = themes.find(t => t.id === currentTheme) || themes[0];
 
   if (!mounted) return null;
 
@@ -60,33 +46,35 @@ export default function SettingsPage() {
           <div className="settings-row">
             <div className="settings-label">
               <span className="settings-label-title">Theme</span>
-              <span className="settings-label-desc">Choose your preferred color scheme</span>
+              <span className="settings-label-desc">Choose light or dark mode</span>
             </div>
-            <div className="theme-dropdown" ref={dropdownRef}>
+            <div className="theme-toggle">
               <button
-                className="theme-dropdown-trigger"
-                onClick={() => setDropdownOpen(!dropdownOpen)}
+                className={`theme-toggle-btn ${!isDark ? 'active' : ''}`}
+                onClick={() => toggleTheme(false)}
               >
-                <span className="theme-dot" style={{ background: currentThemeData.color }} />
-                {currentThemeData.name}
-                <svg className={`dropdown-arrow ${dropdownOpen ? 'open' : ''}`} width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <polyline points="6 9 12 15 18 9"/>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="12" cy="12" r="5"/>
+                  <line x1="12" y1="1" x2="12" y2="3"/>
+                  <line x1="12" y1="21" x2="12" y2="23"/>
+                  <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+                  <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+                  <line x1="1" y1="12" x2="3" y2="12"/>
+                  <line x1="21" y1="12" x2="23" y2="12"/>
+                  <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+                  <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
                 </svg>
+                Light
               </button>
-              {dropdownOpen && (
-                <div className="theme-dropdown-menu">
-                  {themes.map((theme) => (
-                    <button
-                      key={theme.id}
-                      className={`theme-dropdown-item ${currentTheme === theme.id ? 'active' : ''}`}
-                      onClick={() => handleThemeChange(theme.id)}
-                    >
-                      <span className="theme-dot" style={{ background: theme.color }} />
-                      {theme.name}
-                    </button>
-                  ))}
-                </div>
-              )}
+              <button
+                className={`theme-toggle-btn ${isDark ? 'active' : ''}`}
+                onClick={() => toggleTheme(true)}
+              >
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                </svg>
+                Dark
+              </button>
             </div>
           </div>
         </div>
