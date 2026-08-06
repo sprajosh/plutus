@@ -3,7 +3,7 @@ import { redirect } from 'next/navigation';
 import { auth } from '@/lib/auth';
 import { readExpenses } from '@/lib/storage';
 import { isActiveInMonth } from '@/lib/billing';
-import { ExpenseRow } from './components/ExpenseRow';
+import { ExpenseCard } from './components/ExpenseCard';
 import { AnnualSection } from './components/AnnualSection';
 import { ResetButton } from './components/ResetButton';
 import { MobileStatsCard } from './components/MobileStatsCard';
@@ -37,12 +37,12 @@ export default async function DashboardPage() {
       <div className="page-header">
         <div>
           <h1 className="page-title">Dashboard</h1>
-          <p className="page-subtitle">Click any row to toggle paid status</p>
+          <p className="page-subtitle">Click any card to toggle paid status</p>
         </div>
         <div className="actions-bar">
           <ResetButton />
           <Link href="/expenses/new" className="btn btn-primary">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
             </svg>
             Add Expense
@@ -50,7 +50,6 @@ export default async function DashboardPage() {
         </div>
       </div>
 
-      {/* Desktop stats — 3 columns, hidden on mobile */}
       <div className="stats-grid desktop-stats">
         <div className="stat-card">
           <div className="stat-label">Total Monthly</div>
@@ -69,7 +68,6 @@ export default async function DashboardPage() {
         </div>
       </div>
 
-      {/* Mobile stats — 2 cards, second one animates Pending↔Paid */}
       <MobileStatsCard
         total={total}
         pending={pending}
@@ -79,10 +77,9 @@ export default async function DashboardPage() {
         paidCount={paidCount}
       />
 
-      {/* Active expenses */}
       <div className="section-header">
         <div className="section-title">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
             <rect x="2" y="5" width="20" height="14" rx="2"/>
             <line x1="2" y1="10" x2="22" y2="10"/>
           </svg>
@@ -91,30 +88,16 @@ export default async function DashboardPage() {
         </div>
       </div>
 
-      <div className="table-wrap">
-        {sortedActive.length === 0 ? (
-          <div className="empty-state">No active expenses this month</div>
-        ) : (
-          <table className="expense-table">
-            <thead>
-              <tr>
-                <th className="col-expense">Expense</th>
-                <th className="col-category">Category</th>
-                <th className="col-spacer"></th>
-                <th className="col-status">Status</th>
-                <th className="col-amount">Amount</th>
-              </tr>
-            </thead>
-            <tbody>
-              {sortedActive.map((expense) => (
-                <ExpenseRow key={expense.id} expense={expense} currentMonth={currentMonth} />
-              ))}
-            </tbody>
-          </table>
-        )}
-      </div>
+      {sortedActive.length === 0 ? (
+        <div className="empty-state">No active expenses this month</div>
+      ) : (
+        <div className="expense-card-list">
+          {sortedActive.map((expense) => (
+            <ExpenseCard key={expense.id} expense={expense} currentMonth={currentMonth} />
+          ))}
+        </div>
+      )}
 
-      {/* Inactive periodic expenses */}
       <AnnualSection expenses={inactiveExpenses} currentMonth={currentMonth} />
     </>
   );

@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import type { Expense } from '@/lib/types';
-import { ExpenseRow } from './ExpenseRow';
+import { ExpenseCard } from './ExpenseCard';
 
 export function AnnualSection({
   expenses,
@@ -19,7 +19,7 @@ export function AnnualSection({
     <div>
       <div className="section-header">
         <div className="section-title">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" style={{ opacity: 0.6 }}>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" style={{ opacity: 0.6 }}>
             <circle cx="12" cy="12" r="10"/>
             <polyline points="12 6 12 12 16 14"/>
           </svg>
@@ -35,29 +35,16 @@ export function AnnualSection({
       </div>
 
       {open && (
-        <div className="table-wrap" style={{ opacity: 0.85 }}>
-          <table className="expense-table">
-            <thead>
-              <tr>
-                <th className="col-expense">Expense</th>
-                <th className="col-category">Category</th>
-                <th className="col-spacer"></th>
-                <th className="col-status">Next Due</th>
-                <th className="col-amount">Amount</th>
-              </tr>
-            </thead>
-            <tbody>
-              {expenses.map((expense) => (
-                <ExpenseRow
-                  key={expense.id}
-                  expense={expense}
-                  showDue
-                  currentMonth={currentMonth}
-                  dimmed
-                />
-              ))}
-            </tbody>
-          </table>
+        <div className="expense-card-list" style={{ opacity: 0.7 }}>
+          {expenses.map((expense) => (
+            <ExpenseCard
+              key={expense.id}
+              expense={expense}
+              showDue
+              currentMonth={currentMonth}
+              dimmed
+            />
+          ))}
         </div>
       )}
     </div>

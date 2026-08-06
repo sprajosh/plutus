@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 
 const themes = [
-  { id: 'midnight-blue', name: 'Midnight Blue', color: '#2563EB' },
+  { id: 'midnight-blue', name: 'Midnight Blue', color: '#4B6B7C' },
   { id: 'graphite-lime', name: 'Graphite Lime', color: '#84CC16' },
   { id: 'obsidian-copper', name: 'Obsidian Copper', color: '#C8762A' },
   { id: 'abyss-violet', name: 'Abyss Violet', color: '#7C6AF0' },
@@ -63,13 +63,13 @@ export default function SettingsPage() {
               <span className="settings-label-desc">Choose your preferred color scheme</span>
             </div>
             <div className="theme-dropdown" ref={dropdownRef}>
-              <button 
+              <button
                 className="theme-dropdown-trigger"
                 onClick={() => setDropdownOpen(!dropdownOpen)}
               >
                 <span className="theme-dot" style={{ background: currentThemeData.color }} />
                 {currentThemeData.name}
-                <svg className={`dropdown-arrow ${dropdownOpen ? 'open' : ''}`} width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <svg className={`dropdown-arrow ${dropdownOpen ? 'open' : ''}`} width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <polyline points="6 9 12 15 18 9"/>
                 </svg>
               </button>
