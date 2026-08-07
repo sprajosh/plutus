@@ -872,6 +872,7 @@ body.dark .profile-avatar {
 .expense-card.has-open-menu {
   z-index: 10;
   position: relative;
+  opacity: 1 !important;
 }
 
 .expense-card.dimmed {
