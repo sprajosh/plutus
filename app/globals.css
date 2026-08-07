@@ -860,6 +860,10 @@ body.dark .profile-avatar {
   background: var(--bg-inactive);
 }
 
+.expense-card.is-paid .kebab-dropdown {
+  opacity: 1;
+}
+
 .expense-card.is-pending {
   pointer-events: none;
   opacity: 0.7;
