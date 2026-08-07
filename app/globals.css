@@ -415,7 +415,7 @@ tr:hover .row-actions { opacity: 1; }
 .kebab-btn:hover { background: var(--bg-hover); color: var(--text-primary); }
 .kebab-dropdown {
   position: absolute; top: 100%; right: 0; z-index: 9999;
-  background: var(--bg-surface); border: 1px solid var(--border);
+  background: #fff; border: 1px solid var(--border);
   border-radius: var(--radius-md); padding: 6px; min-width: 140px;
   box-shadow: var(--shadow-lg); margin-top: 6px;
 }
@@ -424,6 +424,10 @@ tr:hover .row-actions { opacity: 1; }
   bottom: 100%;
   margin-top: 0;
   margin-bottom: 6px;
+}
+
+body.dark .kebab-dropdown {
+  background: #1A1D27;
 }
 .kebab-dropdown-item {
   display: flex; align-items: center; gap: 10px;
