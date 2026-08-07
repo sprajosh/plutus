@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { signOut } from 'next-auth/react';
+import { Spinner } from '@/app/components/Spinner';
 
 interface User {
   name?: string | null;
@@ -27,6 +28,7 @@ export function SettingsContent({ user }: SettingsContentProps) {
   const [isDark, setIsDark] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [imgError, setImgError] = useState(false);
+  const [signingOut, setSigningOut] = useState(false);
 
   useEffect(() => {
     setMounted(true);
@@ -49,6 +51,11 @@ export function SettingsContent({ user }: SettingsContentProps) {
       localStorage.setItem('plutus-theme', 'light');
       document.body.classList.remove('dark');
     }
+  };
+
+  const handleSignOut = () => {
+    setSigningOut(true);
+    signOut({ callbackUrl: '/' });
   };
 
   if (!mounted) return null;
@@ -88,14 +95,19 @@ export function SettingsContent({ user }: SettingsContentProps) {
             </div>
             <button
               className="btn btn-secondary profile-signout"
-              onClick={() => signOut({ callbackUrl: '/' })}
+              onClick={handleSignOut}
+              disabled={signingOut}
             >
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
-                <polyline points="16 17 21 12 16 7"/>
-                <line x1="21" y1="12" x2="9" y2="12"/>
-              </svg>
-              Sign Out
+              {signingOut ? (
+                <Spinner size={14} />
+              ) : (
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                  <polyline points="16 17 21 12 16 7"/>
+                  <line x1="21" y1="12" x2="9" y2="12"/>
+                </svg>
+              )}
+              {signingOut ? 'Signing out...' : 'Sign Out'}
             </button>
           </div>
         </div>

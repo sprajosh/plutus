@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { CATEGORIES, FREQUENCIES, MONTHS } from '@/lib/constants';
 import type { Expense } from '@/lib/types';
+import { Spinner } from './Spinner';
 
 interface ExpenseFormProps {
   defaultValues?: Partial<Expense>;
@@ -125,6 +126,7 @@ export function ExpenseForm({ defaultValues, action, submitLabel }: ExpenseFormP
 
       <div className="form-footer">
         <button type="submit" className="btn btn-primary" disabled={isPending}>
+          {isPending ? <Spinner size={14} /> : null}
           {isPending ? 'Saving...' : submitLabel}
         </button>
         <button type="button" className="btn btn-secondary" onClick={() => router.back()}>

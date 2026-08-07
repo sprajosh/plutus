@@ -5,6 +5,7 @@ import { togglePaidAction, deleteExpenseAction } from '@/lib/actions';
 import Link from 'next/link';
 import type { Expense } from '@/lib/types';
 import { getNextBillingInfo } from '@/lib/billing';
+import { Spinner } from './Spinner';
 
 function formatCurrency(amount: number) {
   return new Intl.NumberFormat('en-IN', {
@@ -47,6 +48,8 @@ export function ExpenseCard({
   const [isPending, startTransition] = useTransition();
   const [menuOpen, setMenuOpen] = useState(false);
   const [openAbove, setOpenAbove] = useState(false);
+  const [optimisticPaid, setOptimisticPaid] = useState(expense.isPaid);
+  const [hidden, setHidden] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const btnRef = useRef<HTMLButtonElement>(null);
 
@@ -63,16 +66,22 @@ export function ExpenseCard({
 
   const handleToggle = (e: React.MouseEvent) => {
     e.preventDefault();
-    if (!showDue) {
-      startTransition(() => togglePaidAction(expense.id));
-    }
+    if (showDue || isPending) return;
+    const newPaid = !optimisticPaid;
+    setOptimisticPaid(newPaid);
+    startTransition(() => {
+      togglePaidAction(expense.id);
+    });
   };
 
   const handleDelete = (e: React.MouseEvent) => {
     e.stopPropagation();
     e.preventDefault();
     if (confirm(`Delete "${expense.name}"?`)) {
-      startTransition(() => deleteExpenseAction(expense.id));
+      setHidden(true);
+      startTransition(() => {
+        deleteExpenseAction(expense.id);
+      });
     }
   };
 
@@ -86,12 +95,15 @@ export function ExpenseCard({
     setMenuOpen(!menuOpen);
   };
 
+  if (hidden) return null;
+
   const nextInfo = showDue ? getNextBillingInfo(expense, currentMonth) : null;
   const categoryColor = getCategoryColor(expense.category);
+  const isPaid = showDue ? expense.isPaid : optimisticPaid;
 
   return (
     <div
-      className={`expense-card ${expense.isPaid && !showDue ? 'is-paid' : ''} ${dimmed ? 'dimmed' : ''} ${isPending ? 'opacity-50' : ''}`}
+      className={`expense-card ${isPaid && !showDue ? 'is-paid' : ''} ${dimmed ? 'dimmed' : ''} ${isPending ? 'is-pending' : ''}`}
       onClick={handleToggle}
       title={showDue ? undefined : `Click to toggle paid status`}
     >
@@ -111,8 +123,9 @@ export function ExpenseCard({
             {showDue && nextInfo ? (
               <span className="due-badge">{nextInfo.monthName}</span>
             ) : (
-              <span className={`paid-badge ${expense.isPaid ? 'paid' : 'unpaid'}`}>
-                {expense.isPaid ? 'Paid' : 'Unpaid'}
+              <span className={`paid-badge ${isPaid ? 'paid' : 'unpaid'}`}>
+                {isPending && <Spinner size={12} />}
+                {isPaid ? 'Paid' : 'Unpaid'}
               </span>
             )}
           </div>
