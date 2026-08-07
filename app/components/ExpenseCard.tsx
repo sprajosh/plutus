@@ -103,7 +103,7 @@ export function ExpenseCard({
 
   return (
     <div
-      className={`expense-card ${isPaid && !showDue ? 'is-paid' : ''} ${dimmed ? 'dimmed' : ''} ${isPending ? 'is-pending' : ''}`}
+      className={`expense-card ${isPaid && !showDue ? 'is-paid' : ''} ${dimmed ? 'dimmed' : ''} ${isPending ? 'is-pending' : ''} ${menuOpen ? 'has-open-menu' : ''}`}
       onClick={handleToggle}
       title={showDue ? undefined : `Click to toggle paid status`}
     >

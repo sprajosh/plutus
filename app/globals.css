@@ -861,6 +861,11 @@ body.dark .profile-avatar {
   opacity: 0.7;
 }
 
+.expense-card.has-open-menu {
+  z-index: 10;
+  position: relative;
+}
+
 .expense-card.dimmed {
   opacity: 0.6;
   border-left: 3px solid var(--amber);
